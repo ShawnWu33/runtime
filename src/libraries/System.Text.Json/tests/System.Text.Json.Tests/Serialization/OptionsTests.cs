@@ -1852,6 +1852,14 @@ namespace System.Text.Json.Serialization.Tests
             Assert.Null(typeInfo);
         }
 
+        [Fact]
+        public static void ShawnWu_CustomTest()
+        {
+            ClassWithPropertyHavingSetterButNotGetter test_c = new ClassWithPropertyHavingSetterButNotGetter();
+            test_c.Initialize();
+            test_c.Verify();
+        }
+
         [Theory]
         [MemberData(nameof(GetTypeInfo_ResultsAreGeneric_Values))]
         public static void GetTypeInfo_ResultsAreGeneric<T>(T value, string expectedJson)

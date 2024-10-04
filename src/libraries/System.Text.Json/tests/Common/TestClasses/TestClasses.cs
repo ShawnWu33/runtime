@@ -98,7 +98,7 @@ namespace System.Text.Json.Serialization.Tests
         public double Two { get; set; }
     }
 
-    public struct SimpleStructWithSimpleClass: ITestClass
+    public struct SimpleStructWithSimpleClass : ITestClass
     {
         public short MyInt32 { get; set; }
         public SimpleTestClass MySimpleClass { get; set; }
@@ -166,7 +166,8 @@ namespace System.Text.Json.Serialization.Tests
                 ["key"] = "value"
             }
         };
-        public Dictionary<string, List<object>>? MyListDictionary { get; set; } = new Dictionary<string, List<object>> {
+        public Dictionary<string, List<object>>? MyListDictionary { get; set; } = new Dictionary<string, List<object>>
+        {
             ["key"] = new List<object> { "value" }
         };
         public Dictionary<string, Dictionary<string, object>>? MyObjectDictionaryDictionary { get; set; } = new Dictionary<string, Dictionary<string, object>>
@@ -2298,6 +2299,35 @@ namespace System.Text.Json.Serialization.Tests
         public IReadOnlyDictionary<string, ClassWithRecursiveCollectionTypes>? Dictionary { get; set; }
     }
 
+    public class ClassWithPropertyHavingSetterButNotGetter : ITestClass
+    {
+        public static readonly string s_data = "{\"Data\":[1]}";
+
+        public CustomTestClass test_class { get; set; }
+        public void Initialize()
+        {
+            test_class = JsonSerializer.Deserialize<CustomTestClass>(s_data);
+        }
+
+        public void Verify()
+        {
+            Assert.Equal(test_class?.FirstValue, 1);
+        }
+
+    }
+
+    public class CustomTestClass
+    {
+        [JsonRequired]
+        public List<int> Data
+        {
+            // get => throw new Exception();
+            set => FirstValue = value[0];
+        }
+
+        [JsonIgnore]
+        public int FirstValue { get; private set; }
+    }
     internal class MemoryOfTClass<T>
     {
         public Memory<T> Memory { get; set; }
