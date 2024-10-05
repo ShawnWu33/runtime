@@ -2316,12 +2316,42 @@ namespace System.Text.Json.Serialization.Tests
 
     }
 
+    public class ClassWithPropertyHavingSetterAndGetter : ITestClass
+    {
+        public static readonly string s_data = "{\"Data\":[1]}";
+
+        public CustomTestClass2 test_class { get; set; }
+        public void Initialize()
+        {
+            test_class = JsonSerializer.Deserialize<CustomTestClass2>(s_data);
+        }
+
+        public void Verify()
+        {
+            Assert.Equal(test_class?.FirstValue, 1);
+        }
+
+    }
+
     public class CustomTestClass
     {
         [JsonRequired]
         public List<int> Data
         {
             // get => throw new Exception();
+            set => FirstValue = value[0];
+        }
+
+        [JsonIgnore]
+        public int FirstValue { get; private set; }
+    }
+
+    public class CustomTestClass2
+    {
+        [JsonRequired]
+        public List<int> Data
+        {
+            get => throw new Exception();
             set => FirstValue = value[0];
         }
 

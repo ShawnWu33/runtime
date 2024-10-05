@@ -1860,6 +1860,14 @@ namespace System.Text.Json.Serialization.Tests
             test_c.Verify();
         }
 
+        [Fact]
+        public static void ShawnWu_CustomTest2()
+        {
+            ClassWithPropertyHavingSetterAndGetter test_c = new ClassWithPropertyHavingSetterAndGetter();
+            test_c.Initialize();
+            test_c.Verify();
+        }
+
         [Theory]
         [MemberData(nameof(GetTypeInfo_ResultsAreGeneric_Values))]
         public static void GetTypeInfo_ResultsAreGeneric<T>(T value, string expectedJson)
